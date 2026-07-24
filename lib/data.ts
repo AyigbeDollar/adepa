@@ -26,6 +26,44 @@ export async function getProducts(): Promise<Product[]> {
   return data as Product[];
 }
 
+/**
+ * Products a specific distributor stocks, honouring any per-distributor price
+ * override. Falls back to the full catalogue when the distributor has no
+ * inventory configured yet (onboarding/transition) or if the inventory table
+ * isn't reachable — so the shop always shows something rather than erroring.
+ */
+export async function getProductsForDistributor(
+  distributorId: string
+): Promise<Product[]> {
+  if (!isSupabaseConfigured()) return DEMO_PRODUCTS;
+  try {
+    const { data, error } = await getSupabaseAdmin()
+      .from("distributor_products")
+      .select("price_pesewas, products!inner(*)")
+      .eq("distributor_id", distributorId)
+      .eq("active", true)
+      .eq("in_stock", true)
+      .eq("products.active", true);
+    if (error) throw new Error(error.message);
+    if (!data || data.length === 0) return getProducts(); // no inventory yet → global catalogue
+    return data
+      .map((row) => {
+        const p = row.products as unknown as Product;
+        return {
+          ...p,
+          price_pesewas: row.price_pesewas ?? p.price_pesewas,
+        };
+      })
+      .sort(
+        (a, b) =>
+          a.category.localeCompare(b.category) || a.name.localeCompare(b.name)
+      );
+  } catch (err) {
+    console.error("inventory query failed, falling back to catalogue", err);
+    return getProducts();
+  }
+}
+
 export async function getDistributors(): Promise<Distributor[]> {
   if (!isSupabaseConfigured()) return DEMO_DISTRIBUTORS;
   const { data, error } = await getSupabaseAdmin()

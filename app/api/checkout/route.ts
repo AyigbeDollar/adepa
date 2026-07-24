@@ -3,7 +3,7 @@ import {
   computeTotals,
   createOrder,
   getDistributors,
-  getProducts,
+  getProductsForDistributor,
   setOrderReference,
 } from "@/lib/data";
 import { initializeTransaction, isPaystackConfigured } from "@/lib/paystack";
@@ -52,16 +52,16 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Your cart is empty" }, { status: 400 });
 
   try {
-    const [products, distributors] = await Promise.all([
-      getProducts(),
-      getDistributors(),
-    ]);
+    const distributors = await getDistributors();
     const distributor = distributors.find((d) => d.id === body.distributor_id);
     if (!distributor)
       return NextResponse.json(
         { error: "Your delivery area needs re-selecting — go back and set your location again." },
         { status: 400 }
       );
+    // Price authority from the distributor's own inventory (honours per-store
+    // pricing); falls back to the full catalogue when none is configured.
+    const products = await getProductsForDistributor(distributor.id);
 
     // Server-side price authority: never trust client prices.
     const orderItems: OrderItem[] = [];
