@@ -24,7 +24,7 @@ export default function Home() {
           <span className="text-muted">Straight from the source.</span>
         </h1>
         <p className="fade-up fade-up-2 mx-auto mt-6 max-w-xl text-[19px] leading-7 text-muted">
-          Adepa connects Ghana&apos;s FMCG distributors directly to your door.
+          Adepa connects your favourite provisions directly to your door.
           Distributor prices, same-day in-house delivery, and payment with the
           mobile money you already use.
         </p>
