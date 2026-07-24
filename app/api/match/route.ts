@@ -22,7 +22,7 @@ export async function POST(req: Request) {
     ]);
     if (!distributor) {
       return NextResponse.json(
-        { error: "No active distributors available" },
+        { error: "We don't deliver to this area yet — we're expanding fast!" },
         { status: 404 }
       );
     }
@@ -30,7 +30,7 @@ export async function POST(req: Request) {
   } catch (err) {
     console.error("match failed", err);
     return NextResponse.json(
-      { error: "Could not match a distributor" },
+      { error: "We couldn't check your area right now. Please try again." },
       { status: 500 }
     );
   }

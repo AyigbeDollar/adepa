@@ -10,9 +10,9 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "adepa — everyday goods, delivered from the source",
+  title: "adepa — your provisions, straight to your door",
   description:
-    "Adepa connects Ghana's FMCG distributors directly to your home. Wholesale-honest prices, same-day in-house delivery, pay with mobile money.",
+    "Adepa brings your favourite provisions straight to your door at the best prices on the market. Same-day delivery, pay with mobile money.",
 };
 
 export const viewport: Viewport = {
@@ -36,7 +36,7 @@ export default function RootLayout({
                 adepa<span className="text-accent">.</span>
               </p>
               <p className="mt-1">
-                Everyday goods, delivered from the source. Accra · Tema ·
+                Your provisions, straight to your door. Accra · Tema ·
                 Kumasi · Takoradi.
               </p>
               <p className="mt-3">

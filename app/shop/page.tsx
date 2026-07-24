@@ -160,15 +160,15 @@ export default function ShopPage() {
           Where should we deliver?
         </h1>
         <p className="fade-up fade-up-2 mt-3 text-[15px] leading-6 text-muted">
-          Adepa routes your order to the distributor covering your
-          neighbourhood, so it arrives fast and fresh.
+          Tell us where you are and we&apos;ll bring your provisions straight
+          to your door — fresh, fast, and at the best prices around.
         </p>
         <button
           onClick={useMyLocation}
           disabled={locating}
           className="fade-up fade-up-3 mt-8 w-full rounded-full bg-accent px-7 py-3.5 text-[15px] font-medium text-white shadow-sm transition-all hover:bg-accent-dark active:scale-[0.98] disabled:opacity-60"
         >
-          {locating ? "Finding your distributor…" : "Use my location"}
+          {locating ? "Finding provisions near you…" : "Use my location"}
         </button>
         <div className="fade-up fade-up-3 mt-6 w-full">
           <p className="text-[12px] font-medium uppercase tracking-[0.14em] text-muted">
@@ -200,14 +200,15 @@ export default function ShopPage() {
       <div className="mt-6 flex items-center justify-between rounded-2xl bg-surface px-5 py-4 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
         <div className="min-w-0">
           <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-accent">
-            Your distributor
+            Delivering to your area
           </p>
           <p className="mt-0.5 truncate text-[15px] font-semibold tracking-tight">
-            {match.distributor.name}
+            {match.distributor.area}
           </p>
           <p className="truncate text-[12px] text-muted">
-            {match.distributor.area} · {match.distributor.distance_km} km away
-            {match.distributor.outside_zone && " · extended delivery"}
+            {match.distributor.outside_zone
+              ? "Extended delivery — may take a little longer"
+              : "Same-day delivery available"}
           </p>
         </div>
         <button
@@ -336,7 +337,7 @@ export default function ShopPage() {
                 </button>
                 <p className="mb-2 mt-3 text-center text-[11px] leading-4 text-muted">
                   Secured by Paystack — MTN MoMo, Telecel Cash, AT Money &
-                  cards. Your distributor is paid the instant you are charged.
+                  cards.
                 </p>
               </form>
             ) : (

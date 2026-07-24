@@ -59,7 +59,7 @@ export async function POST(req: Request) {
     const distributor = distributors.find((d) => d.id === body.distributor_id);
     if (!distributor)
       return NextResponse.json(
-        { error: "Unknown distributor" },
+        { error: "Your delivery area needs re-selecting — go back and set your location again." },
         { status: 400 }
       );
 

@@ -12,7 +12,7 @@ const STATUS_COPY: Record<OrderStatus, { title: string; body: string; icon: stri
   },
   paid: {
     title: "Order confirmed",
-    body: "Your distributor has been paid and is packing your order. A rider is on the way soon.",
+    body: "Your provisions are being packed right now. A rider will be on the way soon.",
     icon: "✅",
   },
   dispatched: {
@@ -145,9 +145,7 @@ export default function OrderPage({
       </div>
 
       <div className="fade-up fade-up-2 mt-4 rounded-3xl bg-surface p-6 text-[13px] leading-6 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
-        <p className="text-muted">Fulfilled &amp; instantly paid</p>
-        <p className="font-semibold">{order.distributor_name}</p>
-        <p className="mt-3 text-muted">Delivering to</p>
+        <p className="text-muted">Delivering to</p>
         <p className="font-medium">{order.address}</p>
         <p className="text-muted">
           {order.customer_name} · {order.phone}

@@ -19,13 +19,13 @@ export default function Home() {
           Accra · Tema · Kumasi · Takoradi
         </p>
         <h1 className="fade-up fade-up-1 mx-auto mt-4 max-w-3xl text-5xl font-semibold leading-[1.05] tracking-tight sm:text-7xl">
-          Everyday goods.
+          Your provisions.
           <br />
-          <span className="text-muted">Straight from the source.</span>
+          <span className="text-muted">Straight to your door.</span>
         </h1>
         <p className="fade-up fade-up-2 mx-auto mt-6 max-w-xl text-[19px] leading-7 text-muted">
-          Adepa connects your favourite provisions directly to your door.
-          Distributor prices, same-day in-house delivery, and payment with the
+          Adepa connects your favourite provisions directly to your door — at
+          the best prices on the market, delivered same-day, paid with the
           mobile money you already use.
         </p>
         <div className="fade-up fade-up-3 mt-9 flex items-center justify-center gap-4">
@@ -76,19 +76,19 @@ export default function Home() {
             {
               n: "01",
               t: "Share your location",
-              d: "One tap. Adepa instantly matches you to the licensed distributor covering your neighbourhood.",
+              d: "One tap, and Adepa finds the freshest stock closest to your home — so delivery is fast.",
               e: "📍",
             },
             {
               n: "02",
               t: "Fill your basket",
-              d: "Shop the full FMCG catalogue at distributor-honest prices — no market mark-ups, no middlemen.",
+              d: "All your provisions in one place, at the best prices on the market — no mark-ups, no haggling.",
               e: "🛒",
             },
             {
               n: "03",
               t: "Pay & relax",
-              d: "Pay with MoMo or card. Our in-house riders bring it to your door, and your distributor is paid instantly.",
+              d: "Pay with MoMo or card, and our riders bring everything straight to your door the same day.",
               e: "🛵",
             },
           ].map((s) => (
