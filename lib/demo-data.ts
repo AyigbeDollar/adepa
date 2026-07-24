@@ -68,9 +68,9 @@ const P = (
   unit,
   price_pesewas: Math.round(ghs * 100),
   emoji,
-  // Drop a licensed packshot at public/products/<id>.webp and it appears
-  // automatically; until then the card gracefully shows the emoji.
-  image_url: `/products/${id}.webp`,
+  // A licensed packshot at public/products/<id>.jpg appears automatically;
+  // until then the card gracefully shows the emoji.
+  image_url: `/products/${id}.jpg`,
   active: true,
 });
 
