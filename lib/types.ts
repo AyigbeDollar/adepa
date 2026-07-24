@@ -14,6 +14,8 @@ export interface Product {
   unit: string;
   price_pesewas: number;
   emoji: string;
+  /** Public path or URL to a licensed product photo. Falls back to emoji. */
+  image_url?: string | null;
   active?: boolean;
 }
 

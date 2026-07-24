@@ -26,6 +26,7 @@ create table public.products (
   unit text not null,
   price_pesewas integer not null check (price_pesewas > 0),
   emoji text not null default '🛒',
+  image_url text, -- public path or URL to a licensed product photo
   active boolean not null default true,
   created_at timestamptz not null default now()
 );

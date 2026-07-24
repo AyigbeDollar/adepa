@@ -348,9 +348,12 @@ export default function ShopPage() {
                       key={it.product.id}
                       className="flex items-center gap-3 py-3"
                     >
-                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-surface text-2xl shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
-                        {it.product.emoji}
-                      </div>
+                      <ProductImage
+                        product={it.product}
+                        className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white text-2xl shadow-[0_1px_2px_rgba(0,0,0,0.05)]"
+                        imgClassName="h-full w-full object-contain p-1"
+                        emojiClassName="text-2xl"
+                      />
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-[14px] font-medium">
                           {it.product.name}
@@ -386,14 +389,53 @@ export default function ShopPage() {
 
 /* ------------------------------ sub-components ----------------------------- */
 
+/**
+ * Product photo with a graceful emoji fallback. Renders a licensed packshot
+ * when `image_url` resolves; on a missing/broken file it swaps to the emoji,
+ * so the catalogue always looks intentional even before images are added.
+ */
+function ProductImage({
+  product,
+  className,
+  imgClassName,
+  emojiClassName,
+}: {
+  product: Product;
+  className: string;
+  imgClassName: string;
+  emojiClassName: string;
+}) {
+  const [failed, setFailed] = useState(false);
+  const showImage = Boolean(product.image_url) && !failed;
+  return (
+    <div className={className}>
+      {showImage ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={product.image_url as string}
+          alt={product.name}
+          loading="lazy"
+          onError={() => setFailed(true)}
+          className={imgClassName}
+        />
+      ) : (
+        <span className={emojiClassName}>{product.emoji}</span>
+      )}
+    </div>
+  );
+}
+
 function ProductCard({ product }: { product: Product }) {
   const cart = useCart();
   const inCart = cart.items.find((it) => it.product.id === product.id);
   return (
     <div className="group flex flex-col rounded-3xl bg-surface p-4 shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition-shadow hover:shadow-md">
-      <div className="flex h-24 items-center justify-center rounded-2xl bg-background text-5xl transition-transform group-hover:scale-105">
-        {product.emoji}
-      </div>
+      <ProductImage
+        product={product}
+        className="flex h-24 items-center justify-center overflow-hidden rounded-2xl bg-white transition-transform group-hover:scale-105"
+        imgClassName="h-full w-full object-contain p-2"
+        emojiClassName="text-5xl"
+      />
       <p className="mt-3 text-[11px] font-medium uppercase tracking-wide text-muted">
         {product.brand}
       </p>
