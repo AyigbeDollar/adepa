@@ -1,40 +1,115 @@
-import { redirect } from "next/navigation";
-import { getSessionProfile } from "@/lib/supabase-server";
+import { createSupabaseServerClient } from "@/lib/supabase-server";
+import { formatGHS } from "@/lib/types";
+import PortalStatusControls from "./PortalStatusControls";
 
 export const dynamic = "force-dynamic";
 
+interface Item {
+  name: string;
+  unit: string;
+  qty: number;
+}
+interface Row {
+  id: string;
+  created_at: string;
+  status: string;
+  customer_name: string;
+  phone: string;
+  address: string;
+  total_pesewas: number;
+  order_items: Item[];
+}
+
 export default async function PortalHome() {
-  const profile = await getSessionProfile();
-  if (!profile) redirect("/login?next=/portal");
-  if (profile.role !== "distributor") redirect("/admin");
+  const supabase = await createSupabaseServerClient();
+  const { data } = await supabase
+    .from("orders")
+    .select(
+      "id, created_at, status, customer_name, phone, address, total_pesewas, order_items(name, unit, qty)"
+    )
+    .in("status", ["paid", "dispatched"])
+    .order("created_at", { ascending: true });
+  const rows = (data ?? []) as unknown as Row[];
+
+  const toDispatch = rows.filter((r) => r.status === "paid");
+  const inTransit = rows.filter((r) => r.status === "dispatched");
 
   return (
-    <div className="mx-auto max-w-3xl px-5 py-16">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-accent">
-        Distributor portal
-      </p>
-      <h1 className="mt-1 text-3xl font-semibold tracking-tight">Your orders</h1>
+    <div className="space-y-8">
+      <Section
+        title="New orders"
+        subtitle="Paid — pick these and dispatch"
+        rows={toDispatch}
+        empty="No new orders right now."
+      />
+      <Section
+        title="Out for delivery"
+        subtitle="Dispatched — mark delivered on arrival"
+        rows={inTransit}
+        empty="Nothing out for delivery."
+      />
+    </div>
+  );
+}
 
-      {profile.distributorId ? (
-        <p className="mt-2 text-[14px] text-muted">
-          Signed in as {profile.email}. Incoming orders and pick → dispatch →
-          deliver land here in Phase 4.
-        </p>
+function Section({
+  title,
+  subtitle,
+  rows,
+  empty,
+}: {
+  title: string;
+  subtitle: string;
+  rows: Row[];
+  empty: string;
+}) {
+  return (
+    <section>
+      <h2 className="text-[17px] font-semibold tracking-tight">
+        {title} {rows.length > 0 && <span className="text-accent">({rows.length})</span>}
+      </h2>
+      <p className="text-[12px] text-muted">{subtitle}</p>
+      {rows.length === 0 ? (
+        <p className="mt-3 text-[13px] text-muted">{empty}</p>
       ) : (
-        <div className="mt-6 rounded-2xl bg-surface p-6 shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
-          <p className="text-[15px] font-medium">No store linked yet</p>
-          <p className="mt-1 text-[13px] text-muted">
-            Your account isn&apos;t linked to a distributor store. Ask the Adepa
-            admin to assign you before you can see orders.
-          </p>
+        <div className="mt-3 space-y-3">
+          {rows.map((o) => (
+            <div key={o.id} className="rounded-2xl bg-surface p-4 shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="font-medium">{o.customer_name}</p>
+                  <p className="text-[12px] text-muted">
+                    {new Date(o.created_at).toLocaleString("en-GB", {
+                      day: "numeric",
+                      month: "short",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </p>
+                </div>
+                <p className="text-[15px] font-semibold">{formatGHS(o.total_pesewas)}</p>
+              </div>
+
+              <ul className="mt-3 space-y-1 border-y border-hairline py-3 text-[13px]">
+                {(o.order_items ?? []).map((it, i) => (
+                  <li key={i} className="flex justify-between">
+                    <span>{it.name}</span>
+                    <span className="text-muted">×{it.qty} · {it.unit}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-3 flex flex-col gap-2">
+                <a href={`tel:${o.phone}`} className="text-[13px] text-accent hover:opacity-70">
+                  📞 {o.phone}
+                </a>
+                <p className="text-[13px] text-muted">📍 {o.address}</p>
+                <PortalStatusControls orderId={o.id} status={o.status} />
+              </div>
+            </div>
+          ))}
         </div>
       )}
-
-      <form action="/auth/signout" method="post" className="mt-8">
-        <button className="rounded-full bg-foreground px-5 py-2.5 text-[13px] font-medium text-white">
-          Sign out
-        </button>
-      </form>
-    </div>
+    </section>
   );
 }

@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
+import { getSupabaseAdmin } from "@/lib/supabase";
 import DistributorForm from "../DistributorForm";
+import AccessSection, { type Login } from "../AccessSection";
 
 export const dynamic = "force-dynamic";
 
@@ -32,6 +34,28 @@ export default async function EditDistributorPage({
     .maybeSingle<Row>();
   if (!data) notFound();
 
+  // Logins linked to this store, with their emails (from the auth admin API).
+  const admin = getSupabaseAdmin();
+  const { data: profiles } = await admin
+    .from("profiles")
+    .select("id, full_name")
+    .eq("distributor_id", id);
+  let logins: Login[] = [];
+  if (profiles && profiles.length > 0) {
+    const { data: userList } = await admin.auth.admin.listUsers({
+      page: 1,
+      perPage: 1000,
+    });
+    const emailById = new Map(
+      (userList?.users ?? []).map((u) => [u.id, u.email ?? null])
+    );
+    logins = profiles.map((p) => ({
+      id: p.id,
+      fullName: p.full_name,
+      email: emailById.get(p.id) ?? null,
+    }));
+  }
+
   return (
     <div>
       <h1 className="text-2xl font-semibold tracking-tight">Edit distributor</h1>
@@ -50,6 +74,7 @@ export default async function EditDistributorPage({
           active: data.active,
         }}
       />
+      <AccessSection distributorId={data.id} logins={logins} />
     </div>
   );
 }
