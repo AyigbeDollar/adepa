@@ -6,20 +6,31 @@ emoji. Replace any file here to change a product's photo — no code change.
 
 ## Current status
 
-21 of 28 photos are pre-populated from open product databases
-(Open Food Facts / Open Beauty Facts, community-contributed under open
-licenses) via `scripts/fetch-images.mjs`.
+**Official brand pack shots (Oct 2026).** These 9 come from each brand's
+official Ghana Instagram account, cropped to the pack (captions, promo text
+and prices removed). Use them only with the brand's or distributor's OK.
 
-**Awaiting a proper packshot (currently emoji):** `p-frytol-1l`,
-`p-voltic-6`, `p-onga-pk`, `p-goldentree`, `p-sugar-1kg`, `p-cracker`,
-`p-cowbell-400`. These are mostly Ghana-specific brands the open databases
-don't carry — best sourced from the distributor/manufacturer.
+| Product | Source post |
+|---|---|
+| `p-cowbell-400` | [cowbellghana](https://www.instagram.com/cowbellghana/reel/DcBtjIBEWFx/) |
+| `p-frytol-1l` | [frytolghana](https://www.instagram.com/frytolghana/reel/DSt0C2QjPnU/) |
+| `p-goldentree` | [goldentree_gh](https://www.instagram.com/goldentree_gh/p/DUSxScLDPhW/) |
+| `p-ideal-160` | [idealmilkghana](https://www.instagram.com/idealmilkghana/reel/DeGu3_-FD3Z/) |
+| `p-kalyppo-6` | [kalyppojuice](https://www.instagram.com/kalyppojuice/p/Dd574gLFhan/) |
+| `p-keysoap` | [keysoapghana](https://www.instagram.com/keysoapghana/p/Cyi3-t0rSYX/) |
+| `p-milo-400` | [officialmiloghana](https://www.instagram.com/officialmiloghana/reel/DeMwi-XCV6K/) |
+| `p-onga-pk` | [ongaghana](https://www.instagram.com/ongaghana/reel/Ddh08umIxgk/) |
+| `p-voltic-6` | [voltic_gh](https://www.instagram.com/voltic_gh/reel/C6_I4FWNaJx/) |
 
-**Approximate matches worth replacing with the exact SKU** when you have it:
-`p-titus-125` (generic sardine tin), `p-ideal-160` (evaporated-milk tin, other
-brand), `p-kalyppo-6` (generic juice), `p-milo-400` (Milo UHT pack, not the
-tin), `p-keysoap`, `p-pepsodent` (Pepsodent oral-care, not the toothpaste
-tube).
+**Still from open product databases** (Open Food Facts / Open Beauty Facts,
+via `scripts/fetch-images.mjs`). Several are not the Ghana SKU and are worth
+replacing: `p-beans-1kg`, `p-exeter-340`, `p-indomie-5`, `p-lux-soap`,
+`p-maggi-60`, `p-rice-5kg`, `p-softcare-4`, `p-titus-125`,
+`p-plantain-150`, `p-gari-1kg`, `p-nescafe-50`, `p-pepsodent`,
+`p-omo-900`, `p-dettol-250`, `p-nivea-200`, `p-geisha`, `p-gino-210`.
+
+**No image yet (emoji):** `p-sugar-1kg`, `p-cracker` — no official brand
+account found; source from the distributor.
 
 ## Image specs
 
