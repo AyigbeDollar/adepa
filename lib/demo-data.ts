@@ -91,12 +91,12 @@ export const DEMO_PRODUCTS: Product[] = [
   P("p-gino-210", "Gino Tomato Mix 210g", "Gino", "Cooking Essentials", "210 g tin", 6.5, "🍅"),
   P("p-frytol-1l", "Frytol Cooking Oil 1L", "Frytol", "Cooking Essentials", "1 L bottle", 38, "🫒"),
   P("p-maggi-60", "Maggi Cubes ×60", "Maggi", "Cooking Essentials", "60 cubes", 15, "🧂"),
-  P("p-onga-pk", "Onga Seasoning Pack", "Onga", "Cooking Essentials", "10 sachets", 10, "🧂"),
+  P("p-onga-pk", "Onga Tomato Mix", "Onga", "Cooking Essentials", "1 kg pouch", 10, "🍅"),
   P("p-titus-125", "Titus Sardines 125g", "Titus", "Cooking Essentials", "125 g tin", 12, "🐟"),
   P("p-exeter-340", "Exeter Corned Beef", "Exeter", "Cooking Essentials", "340 g tin", 45, "🥩"),
   // Snacks & Biscuits
   P("p-indomie-5", "Indomie Chicken ×5", "Indomie", "Snacks & Biscuits", "5-pack", 22, "🍜"),
-  P("p-goldentree", "Golden Tree Chocolate", "Golden Tree", "Snacks & Biscuits", "100 g bar", 20, "🍫"),
+  P("p-goldentree", "Golden Tree Kingsbite 100g", "Golden Tree", "Snacks & Biscuits", "100 g bar", 20, "🍫"),
   P("p-plantain-150", "Plantain Chips 150g", "Deelight", "Snacks & Biscuits", "150 g pack", 10, "🍌"),
   P("p-cracker", "King Cracker Biscuits", "King", "Snacks & Biscuits", "12-pack", 8, "🍪"),
   // Home & Cleaning
