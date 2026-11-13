@@ -1,4 +1,5 @@
 import crypto from "crypto";
+import { withSpan } from "./telemetry";
 
 /**
  * Paystack integration (Ghana: mobile money + cards, currency GHS).
@@ -47,19 +48,29 @@ export async function initializeTransaction(args: InitArgs): Promise<{
     body.bearer = "subaccount";
   }
 
-  const res = await fetch("https://api.paystack.co/transaction/initialize", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${secret}`,
-      "Content-Type": "application/json",
+  return withSpan(
+    "paystack.transaction.initialize",
+    {
+      "app.payment.amount_pesewas": args.amountPesewas,
+      "app.payment.split": Boolean(args.subaccountCode),
     },
-    body: JSON.stringify(body),
-  });
-  const json = await res.json();
-  if (!res.ok || !json.status) {
-    throw new Error(json.message || "Paystack initialisation failed");
-  }
-  return json.data;
+    async (span) => {
+      const res = await fetch("https://api.paystack.co/transaction/initialize", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${secret}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+      const json = await res.json();
+      span.setAttribute("http.response.status_code", res.status);
+      if (!res.ok || !json.status) {
+        throw new Error(json.message || "Paystack initialisation failed");
+      }
+      return json.data;
+    }
+  );
 }
 
 export function verifyWebhookSignature(

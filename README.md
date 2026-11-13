@@ -55,6 +55,24 @@ cp .env.example .env.local   # optional — demo mode works with no env
 npm run dev
 ```
 
+## Observability (OpenTelemetry → Honeycomb)
+
+Traces are off until `HONEYCOMB_API_KEY` is set (see `.env.example`), so demo
+mode and local dev send nothing.
+
+- `instrumentation.ts` registers OpenTelemetry via `@vercel/otel`; Next.js
+  then traces every route handler, server action, render and `fetch`.
+- `lib/telemetry.ts` adds business context: `withSpan()` for key steps
+  (`order.create`, `paystack.transaction.initialize`, `order.set_status`),
+  `annotate()` for attributes, `markError()` with a stable `exception.slug`.
+- Useful fields to query: `app.checkout.outcome`, `app.checkout.reject_reason`,
+  `app.payment.mode`, `app.order.total_pesewas`, `app.distributor.id`,
+  `app.match.outside_zone`, `app.webhook.event`, `exception.slug`.
+- No customer PII (name, phone, email, address) goes into traces.
+
+To enable on Vercel: add `HONEYCOMB_API_KEY` (and `HONEYCOMB_ENDPOINT` for EU
+accounts) in Project → Settings → Environment Variables, then redeploy.
+
 ## Architecture notes
 
 - All database access goes through server-side API routes with the service
